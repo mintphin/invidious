@@ -1,8 +1,14 @@
 # Invidious
 
-[![Build Status](https://travis-ci.org/omarroth/invidious.svg?branch=master)](https://travis-ci.org/omarroth/invidious)
+[![Build Status](https://travis-ci.org/iv-org/invidious.svg?branch=master)](https://travis-ci.org/github/iv-org/invidious) [![Translation Status](https://hosted.weblate.org/widgets/invidious/-/translations/svg-badge.svg)](https://hosted.weblate.org/engage/invidious/)
 
 ## Invidious is an alternative front-end to YouTube
+
+## Invidious instances:
+
+[Public Invidious instances are listed here.](https://github.com/iv-org/invidious/wiki/Invidious-Instances)
+
+## Invidious features:
 
 - [Copylefted libre software](https://github.com/iv-org/invidious) (AGPLv3+ licensed)
 - Audio-only mode (and no need to keep window open on mobile)
@@ -25,30 +31,22 @@
 - No ads
 - No CoC
 - No CLA
+- [Multilingual](https://hosted.weblate.org/projects/invidious/#languages) (translated into many languages)
 
-Liberapay: https://liberapay.com/omarroth  
-BTC: 356DpZyMXu6rYd55Yqzjs29n79kGKWcYrY  
-BCH: qq4ptclkzej5eza6a50et5ggc58hxsq5aylqut2npk
-
-## Invidious Instances
-
-[Public instances](https://github.com/iv-org/invidious/wiki/Invidious-Instances) are to be found in this list.
-
-### Official Instances
-
-- [invidio.us](https://invidio.us) 🇺🇸  
-  Issuer: Let's Encrypt, [SSLLabs Verification](https://www.ssllabs.com/ssltest/analyze.html?d=invidio.us)
-- [kgg2m7yk5aybusll.onion](http://kgg2m7yk5aybusll.onion)
-- [axqzx4s6s54s32yentfqojs3x5i7faxza6xo3ehd4bzzsg2ii4fv2iid.onion](http://axqzx4s6s54s32yentfqojs3x5i7faxza6xo3ehd4bzzsg2ii4fv2iid.onion)
-
-## Screenshots
+## Screenshots:
 
 | Player                                                                                                                  | Preferences                                                                                                             | Subscriptions                                                                                                               |
 | ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
 | [<img src="screenshots/01_player.png?raw=true" height="140" width="280">](screenshots/01_player.png?raw=true)           | [<img src="screenshots/02_preferences.png?raw=true" height="140" width="280">](screenshots/02_preferences.png?raw=true) | [<img src="screenshots/03_subscriptions.png?raw=true" height="140" width="280">](screenshots/03_subscriptions.png?raw=true) |
 | [<img src="screenshots/04_description.png?raw=true" height="140" width="280">](screenshots/04_description.png?raw=true) | [<img src="screenshots/05_preferences.png?raw=true" height="140" width="280">](screenshots/05_preferences.png?raw=true) | [<img src="screenshots/06_subscriptions.png?raw=true" height="140" width="280">](screenshots/06_subscriptions.png?raw=true) |
 
-## Installation
+## Installation:
+
+To manually compile invidious you need at least 2GB of RAM. If you have less you can setup SWAP to have a combined amount of 2 GB or use Docker instead.
+
+After installation take a look at the [Post-install steps](#post-install-configuration).
+
+### Automated installation:
 
 [Invidious-Updater](https://github.com/tmiland/Invidious-Updater) is a self-contained script that can automatically install and update Invidious.
 
@@ -75,9 +73,9 @@ $ docker volume rm invidious_postgresdata
 $ docker-compose build
 ```
 
-### Linux
+### Manual installation:
 
-To manually compile invidious you need at least 2GB of RAM. If you have less you can setup SWAP to have a combined amount of 2 GB or use Docker instead.
+### Linux:
 
 #### Install the dependencies
 
@@ -92,7 +90,7 @@ $ curl -sSL https://dist.crystal-lang.org/apt/setup.sh | sudo bash
 $ curl -sL "https://keybase.io/crystal/pgp_keys.asc" | sudo apt-key add -
 $ echo "deb https://dist.crystal-lang.org/apt crystal main" | sudo tee /etc/apt/sources.list.d/crystal.list
 $ sudo apt-get update
-$ sudo apt install crystal libssl-dev libxml2-dev libyaml-dev libgmp-dev libreadline-dev postgresql librsvg2-bin libsqlite3-dev
+$ sudo apt install crystal libssl-dev libxml2-dev libyaml-dev libgmp-dev libreadline-dev postgresql librsvg2-bin libsqlite3-dev zlib1g-dev
 ```
 
 #### Add an Invidious user and clone the repository
@@ -136,7 +134,7 @@ $ ./invidious # stop with ctrl c
 $ exit
 ```
 
-#### systemd service
+#### Systemd service:
 
 ```bash
 $ sudo cp /home/invidious/invidious/invidious.service /etc/systemd/system/invidious.service
@@ -144,7 +142,7 @@ $ sudo systemctl enable invidious.service
 $ sudo systemctl start invidious.service
 ```
 
-#### Logrotate
+#### Logrotate:
 
 ```bash
 $ sudo echo "/home/invidious/invidious/invidious.log {
@@ -158,7 +156,7 @@ minsize 1048576
 $ sudo chmod 0644 /etc/logrotate.d/invidious.logrotate
 ```
 
-### macOS:
+### MacOS:
 
 ```bash
 # Install dependencies
@@ -186,6 +184,18 @@ $ psql invidious kemal < config/sql/playlist_videos.sql
 $ shards update && shards install
 $ crystal build src/invidious.cr --release
 ```
+
+## Post-install configuration:
+
+Detailed configuration available in the [configuration guide](https://github.com/iv-org/invidious/wiki/Configuration).
+
+If you use a reverse proxy, you **must** configure invidious to properly serve request through it:
+
+`https_only: true` : if your are serving your instance via https, set it to true
+
+`domain: domain.ext`: if you are serving your instance via a domain name, set it here
+
+`external_port: 443`: if your are serving your instance via https, set it to 443
 
 ## Update Invidious
 
@@ -233,6 +243,7 @@ $ ./sentry
 - [PeerTubeify](https://gitlab.com/Cha_deL/peertubeify): On YouTube, displays a link to the same video on PeerTube, if it exists.
 - [MusicPiped](https://github.com/deep-gaurav/MusicPiped): A material design music player that streams music from YouTube.
 - [LapisTube](https://github.com/blubbll/lapis-tube): A fancy and advanced (experimental) YouTube front-end. Combined streams & custom YT features.
+- [HoloPlay](https://github.com/stephane-r/HoloPlay): Funny Android application connecting on Invidious API's with search, playlists and favoris.
 
 ## Contributing
 
@@ -244,10 +255,30 @@ $ ./sentry
 
 #### Translation
 
-- Log in with an account you have elsewhere, or register an account and start translating at [Hosted Weblate](https://hosted.weblate.org/projects/invidious/).
+- Log in with an account you have elsewhere, or register an account and start translating at [Hosted Weblate](https://hosted.weblate.org/engage/invidious/).
+
+## Donate:
+
+Liberapay: https://liberapay.com/iv-org/
 
 ## Contact
 
-Feel free to send an e-mail to omarroth@protonmail.com or join our [Matrix server](https://riot.im/app/#/room/#invidious:matrix.org), or #invidious on freenode.
+Feel free to join our [Matrix room](https://matrix.to/#/#invidious:matrix.org), or #invidious on freenode. Both platforms are bridged together.
 
-You can also read the release notes on the [page of releases](https://github.com/iv-org/invidious/releases) [CHANGELOG.md](https://github.com/iv-org/invidious/blob/master/CHANGELOG.md) included in the repository.
+## Liability
+
+We take no responsibility for the use of our tool, or external instances provided by third parties. We strongly recommend you abide by the valid official regulations in your country. Furthermore, we refuse liability for any inappropriate use of Invidious, such as illegal downloading. This tool is provided to you in the spirit of free, open software.
+
+You may view the LICENSE in which this software is provided to you [here](./LICENSE).
+
+>   16. Limitation of Liability.
+>
+> IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
+WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MODIFIES AND/OR CONVEYS
+THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY
+GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE
+USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED TO LOSS OF
+DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD
+PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS),
+EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGES.
